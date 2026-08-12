@@ -5,11 +5,28 @@ import { prisma } from "./prisma.js";
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
 
-  trustedOrigins: [process.env.CLIENT_ORIGIN!],
+  // 1. Ensure trustedOrigins includes both your frontend AND any local/preview origins
+  trustedOrigins: [
+    process.env.CLIENT_ORIGIN!,
+    "http://localhost:5173", // Add local dev if applicable
+  ],
 
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+
+  // 2. Configure cross-site cookies for decoupled Frontend/Backend
+  advanced: {
+    useSecureCookies: true, // Force HTTPS secure flag in production
+    crossSubDomainCookies: {
+      enabled: true,
+    },
+    defaultCookieAttributes: {
+      sameSite: "none", // Required for cross-origin OAuth redirects
+      secure: true,
+      partitioned: true, // Modern browser CHIPS support
+    },
+  },
 
   emailAndPassword: {
     enabled: true,
