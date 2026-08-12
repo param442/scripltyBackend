@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 // import { toNodeHandler } from "better-auth/node";
 // import { auth } from "./lib/auth";
-// import apiRoutes from "./routes";
+import apiRoutes from "./routes";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
@@ -23,7 +23,7 @@ app.use(express.json());
 // Better Auth
 // app.all("/api/auth/*", toNodeHandler(auth));
 
-// app.use("/api", apiRoutes);
+app.use("/api", apiRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({
