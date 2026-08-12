@@ -19,10 +19,9 @@ app.use(
   }),
 );
 
-// Better Auth MUST come before express.json()
-app.all("/api/auth/*splat", toNodeHandler(auth));
+// Better Auth
+app.all("/api/auth/*", toNodeHandler(auth));
 
-// JSON parser for your normal API routes
 app.use(express.json());
 
 app.use("/api", apiRoutes);
@@ -34,8 +33,12 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server listening on port ${PORT}`);
-});
+  app.listen(PORT, () => {
+    console.log(`🚀 Server listening on http://localhost:${PORT}`);
+  });
+}
+
+export default app;
