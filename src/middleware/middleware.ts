@@ -12,8 +12,16 @@ export const requireAuth = async (
   next: NextFunction,
 ) => {
   try {
+    const headers = new Headers();
+
+    Object.entries(req.headers).forEach(([key, value]) => {
+      if (value) {
+        headers.set(key, Array.isArray(value) ? value.join(",") : value);
+      }
+    });
+
     const session = await auth.api.getSession({
-      headers: req.headers,
+      headers,
     });
 
     if (!session) {

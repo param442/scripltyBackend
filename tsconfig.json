@@ -5,11 +5,19 @@
     "moduleResolution": "NodeNext",
     "lib": ["ES2022"],
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": ".",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"]
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*.ts",
+    "generated/**/*.ts",
+    "prisma/**/*.ts",
+    "utils/**/*.ts",
+    "prisma.config.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
 }
