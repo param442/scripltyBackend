@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { toNodeHandler } from "better-auth/node";
-import { auth } from "./lib/auth";
-import apiRoutes from "./routes";
+// import { toNodeHandler } from "better-auth/node";
+// import { auth } from "./lib/auth";
+// import apiRoutes from "./routes";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
@@ -19,12 +19,11 @@ app.use(
   }),
 );
 
-// Better Auth
-app.all("/api/auth/*", toNodeHandler(auth));
-
 app.use(express.json());
+// Better Auth
+// app.all("/api/auth/*", toNodeHandler(auth));
 
-app.use("/api", apiRoutes);
+// app.use("/api", apiRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({
@@ -37,7 +36,7 @@ if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 5000;
 
   app.listen(PORT, () => {
-    console.log(`🚀 Server listening on http://localhost:${PORT}`);
+    console.log(` Server listening on http://localhost:${PORT}`);
   });
 }
 
