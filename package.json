@@ -1,6 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Express backend with Prisma ORM and Better Auth schema",
   "main": "dist/index.js",
   "scripts": {
