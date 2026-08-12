@@ -7,9 +7,9 @@ export interface AuthenticatedRequest extends Request {
 }
 
 export const requireAuth = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const session = await auth.api.getSession({
@@ -17,14 +17,20 @@ export const requireAuth = async (
     });
 
     if (!session) {
-      return res.status(401).json({ error: "Unauthorized: Missing or invalid session" });
+      return res.status(401).json({
+        error: "Unauthorized: Please log in",
+      });
     }
 
-    (req as AuthenticatedRequest).user = session.user;
-    (req as AuthenticatedRequest).session = session.session;
+    req.user = session.user;
+    req.session = session.session;
 
     next();
   } catch (error) {
-    return res.status(500).json({ error: "Authentication middleware error" });
+    console.error("Authentication error:", error);
+
+    return res.status(500).json({
+      error: "Authentication middleware error",
+    });
   }
 };
