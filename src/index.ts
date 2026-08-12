@@ -28,7 +28,15 @@ app.use(express.json());
 
 // 4. YOUR REGULAR ROUTES
 app.use("/api", apiRoutes);
-
+app.get("/", (req, res) => {
+  // If an error query parameter is passed (e.g. ?error=state_mismatch), redirect to frontend
+  if (req.query.error) {
+    return res.redirect(
+      `https://scriplty.vercel.app/?error=${req.query.error}`,
+    );
+  }
+  res.json({ message: "Scriplty Backend API is active." });
+});
 app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",
