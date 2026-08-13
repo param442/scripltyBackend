@@ -5,6 +5,7 @@
   "description": "Express backend with Prisma ORM and Better Auth schema",
   "main": "dist/index.js",
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "tsx watch src/index.ts",
     "build": "prisma generate && tsc",
     "start": "node dist/index.js",
