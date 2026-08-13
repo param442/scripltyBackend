@@ -12,10 +12,29 @@ const app = express();
 
 app.set("trust proxy", 1); // Trust the first proxy (if behind a reverse proxy like Vercel or Nginx)
 
+const allowedOrigins = [
+  process.env.CLIENT_ORIGIN,
+  "http://localhost:5173",
+  "https://scriplty.vercel.app",
+].filter(Boolean) as string[];
+
 // 1. CORS MUST COME FIRST
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      try {
+        const hostname = new URL(origin).hostname;
+        if (
+          allowedOrigins.includes(origin) ||
+          hostname === "localhost" ||
+          hostname.endsWith(".vercel.app")
+        ) {
+          return callback(null, true);
+        }
+      } catch {}
+      return callback(null, false);
+    },
     credentials: true,
   }),
 );
