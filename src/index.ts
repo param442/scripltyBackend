@@ -22,18 +22,16 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      try {
-        const hostname = new URL(origin).hostname;
-        if (
-          allowedOrigins.includes(origin) ||
-          hostname === "localhost" ||
-          hostname.endsWith(".vercel.app")
-        ) {
-          return callback(null, true);
-        }
-      } catch {}
-      return callback(null, false);
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      console.log("Blocked CORS origin:", origin);
+      return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
   }),
