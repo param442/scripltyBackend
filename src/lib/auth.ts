@@ -2,25 +2,26 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma.js";
 
+const clientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:5173";
+
 export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL, // Must be https://scriplty-backend.vercel.app
+  baseURL: process.env.BETTER_AUTH_URL || clientOrigin,
 
   trustedOrigins: [
-    "https://scriplty.vercel.app", // Your frontend production URL
-    "http://localhost:5173", // Your frontend local dev URL
+    clientOrigin,
+    "http://localhost:5173",
   ],
 
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
 
-  // ENABLE CROSS-DOMAIN COOKIES
+  // Standard first-party cookie configuration
   advanced: {
     useSecureCookies: true,
     defaultCookieAttributes: {
-      sameSite: "none", // REQUIRED for cross-site OAuth redirects
+      sameSite: "lax",
       secure: true,
-      partitioned: true,
     },
   },
 
