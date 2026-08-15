@@ -24,7 +24,8 @@ export const auth = betterAuth({
       "https://scriplty-backend.vercel.app",
     ];
     if (request) {
-      const origin = request.headers.get("origin") || request.headers.get("referer");
+      const origin =
+        request.headers.get("origin") || request.headers.get("referer");
       if (origin) {
         try {
           const url = new URL(origin);
@@ -52,6 +53,12 @@ export const auth = betterAuth({
 
   emailAndPassword: {
     enabled: true,
+  },
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ["github", "google"],
+    },
   },
 
   socialProviders: {
