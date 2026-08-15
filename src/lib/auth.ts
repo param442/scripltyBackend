@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma.js";
 
+const isProduction = process.env.NODE_ENV === "production";
 const clientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:5173";
 
 if (!process.env.BETTER_AUTH_SECRET) {
@@ -18,6 +19,7 @@ export const auth = betterAuth({
     const origins = [
       clientOrigin,
       "http://localhost:5173",
+      "http://localhost:5000",
       "https://scriplty.vercel.app",
       "https://scriplty-backend.vercel.app",
     ];
@@ -39,12 +41,12 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
 
-  // Standard first-party cookie configuration
+  // Cookie configuration dynamically adjusted for Dev vs Prod
   advanced: {
-    useSecureCookies: true,
+    useSecureCookies: isProduction,
     defaultCookieAttributes: {
-      sameSite: "lax",
-      secure: true,
+      sameSite: isProduction ? "none" : "lax",
+      secure: isProduction,
     },
   },
 
