@@ -1,7 +1,8 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma.js";
-
+import { sendEmail } from "./email.js";
+import res from "../components/emailHtml.js";
 const isProduction = process.env.NODE_ENV === "production";
 const clientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:5173";
 
@@ -53,6 +54,20 @@ export const auth = betterAuth({
 
   emailAndPassword: {
     enabled: true,
+  },
+  emailVerification: {
+    sendVerificationEmail: async ({ url, user }) => {
+      /**
+       * @args  to - The recipient's email address
+       * @args  subject - The subject of the email
+       * @args  text - The plain text content of the email or can be html content as well
+       *
+       */
+
+      await sendEmail(user.email, "Verify your Scriptly account", res(url));
+    },
+
+    sendOnSignUp: true,
   },
   account: {
     accountLinking: {
