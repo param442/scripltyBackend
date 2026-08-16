@@ -12,6 +12,9 @@ const transport = nodemailer.createTransport({
 
 const sendEmail = async (to: string, subject: string, text: string) => {
   try {
+    console.log("Sending email to:", to);
+    console.log("Email subject:", subject);
+    console.log("Email content:", text);
     const info = await transport.sendMail({
       from: "Scriplty  <Scriptly.dev@paramvirsingh.me>",
       to: to,
