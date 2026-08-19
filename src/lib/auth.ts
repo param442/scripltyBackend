@@ -23,6 +23,7 @@ export const auth = betterAuth({
       "http://localhost:5000",
       "https://scriplty.vercel.app",
       "https://scriplty-backend.vercel.app",
+      "https://scriptly.paramvirsingh.me",
     ];
     if (request) {
       const origin =
