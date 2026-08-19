@@ -16,6 +16,7 @@ const allowedOrigins = [
   process.env.CLIENT_ORIGIN,
   "http://localhost:5173",
   "https://scriplty.vercel.app",
+  "https://scriptly.paramvirsingh.me",
 ].filter(Boolean) as string[];
 
 // 1. CORS MUST COME FIRST
